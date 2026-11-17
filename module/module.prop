@@ -1,0 +1,6 @@
+id=tanke_proxy
+name=StepRun Per-App API Rewrite
+version=v3.0.1 (self-contained: bundled node, deploy-time certs, no node-forge, no Termux)
+versionCode=301
+author=W
+description=Transparent MITM for com.lptiyu.tanke only (uid -> api2/api/pre-api.lptiyu.com:443 via iptables REDIRECT). Rewrites the version gate. Self-contained: the full package ships its own node runtime, and the CA + leaf certificates are generated on the phone at first deploy (no private key is ever distributed). No system-wide http_proxy, so other apps are unaffected. 'tanke-proxy.sh adapt-probe' checks whether a different APK version still uses the same sign rules.

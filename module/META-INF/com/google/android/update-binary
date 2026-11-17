@@ -1,0 +1,9 @@
+#!/sbin/sh
+# Standard Magisk module shim: hands the zip to Magisk's own module installer.
+umask 022
+OUTFD=$2
+ZIPFILE=$3
+mount /data 2>/dev/null
+. /data/adb/magisk/util_functions.sh
+install_module
+exit 0

@@ -1,0 +1,59 @@
+# 大文件与本地产物
+*.apk
+*.zip
+!dist/tanke-proxy-lite.zip
+backup/
+dump/
+logs/
+out/
+rev_work/
+*.jsonl
+*.log
+*.tgz
+*.bin
+
+# 证书与私钥（部署时在手机上生成，永不入库）
+*.pem
+*.key
+*.crt
+ca.*
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+node_modules/
+
+# 截图（含账号界面，不进仓库）
+*.png
+*.jpg
+*.jpeg
+verify/
+
+# 发布工作目录和可能携带隐私的运行产物
+nrtp/
+pkg_lite/
+pkg_full/
+*.jsonl.*
+*.log.*
+*.har
+*.pcap
+*.pcapng
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.der
+*.cer
+*.tar
+*.sqlite
+*.sqlite3
+*.db
+adapt-probe-report*
+state.env
+health.env
+watchdog.pid
+.heartbeat
+.env
+.env.*

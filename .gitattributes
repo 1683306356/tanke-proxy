@@ -1,0 +1,20 @@
+# Shell 脚本与 JS 一律 LF —— CRLF 的 shebang 在 Android 上是静默的
+# "no such file or directory"，deploy.sh / service.sh 都会直接跑不起来。
+* text=auto eol=lf
+
+*.sh            text eol=lf
+*.mjs           text eol=lf
+*.ps1           text eol=lf
+*.md            text eol=lf
+*.env           text eol=lf
+*.prop          text eol=lf
+*.version       text eol=lf
+*.txt           text eol=lf
+update-binary   text eol=lf
+
+# 二进制，不要做任何换行或 diff 处理
+*.zip           binary
+*.apk           binary
+*.so            binary
+*.pem           binary
+*.der           binary

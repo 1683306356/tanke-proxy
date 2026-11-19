@@ -7,14 +7,14 @@
 
 ## 装
 
-**1. 当前清洗候选提供 `dist/tanke-proxy-lite.zip`**，需要 Termux 中已安装 Node.js。
+**1. 到 Releases 下载安装包**：`tanke-proxy-full.zip` 内置 arm64 Node.js，无需另装 Termux；`tanke-proxy-lite.zip` 需要先在 Termux 中执行 `pkg install nodejs`。
 
-full 包的安装说明供后续使用：本次未提供或审核 full 实物；补齐运行时、第三方许可并单独检查后，再发布到正式仓库的 Releases。
+两个包使用相同的 v3.0.1 模块脚本。full 包已补齐运行时许可及文件复核；本次没有进行新的 Android 真机安装测试。
 
 **2.（二选一）**
 
 ```sh
-# A) Magisk App：模块 → 从本地安装 → 选 tanke-proxy-lite.zip → 重启，装完即生效
+# A) Magisk App：模块 → 从本地安装 → 选 full 或 lite 的 ZIP → 重启
 
 # B) 手工：解压后进目录
 su
@@ -117,10 +117,10 @@ docs/SHARE_GUIDE.md      换版本怎么验、不一致怎么改
 docs/LEAF-CERTS.md       叶证书结构与生成方式
 dist/tanke-proxy-lite.zip  轻包（约 74 KB，用 Termux 的 node，不含内置运行时）
 CHANGELOG.md             v1 → v3.0.1 演进
-RELEASE-HASHES.txt       本次候选 lite 的体积、条目数、SHA256
+RELEASE-HASHES.txt       本次 full / lite 的体积、条目数、SHA256
 ```
 
-本次候选只含 `lite` 包；需要先在 Termux 里运行 `pkg install nodejs`。请勿把原目录外未检查的 full 包当成本次清洗产物。
+Releases 同时提供 full 与 lite；full 的内置运行时及完整第三方许可仅随安装包分发。运行时版本与复核范围见 [`docs/FULL-RUNTIME.md`](docs/FULL-RUNTIME.md)。
 
 ---
 
@@ -141,8 +141,7 @@ full 构建另需 `<仓库>/nrtp/bin/node`、规定的十个动态库、
 准备好后运行 `tools/build-packages.ps1`（不加 `-LiteOnly`）。许可文件存在
 不代表审查已完成；必须根据实际版本和来源核对。运行时及许可材料不提交到本仓库。
 
-RUNPATH 工具为 `tools/patch-runpath2.mjs`。本次未提供 full 运行时，
-未测试 full 构建和 Android 安装。
+RUNPATH 工具为 `tools/patch-runpath2.mjs`。本次已验证 full 构建、ELF 依赖、许可材料和发布包内容，未进行新的 Android 真机安装测试。
 
 ## 日志与隐私
 

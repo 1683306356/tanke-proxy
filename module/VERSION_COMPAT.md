@@ -1,6 +1,6 @@
 # 版本敏感点清单（VERSION COMPAT）
 
-> 适用对象：当前清洗候选 `dist/tanke-proxy-lite.zip`（模块 `tanke_proxy` v3.0.1）；full 包未附。
+> 适用对象：v3.0.1 Release 的 full / lite 安装包（模块 `tanke_proxy`）；两者模块脚本相同，仅运行时来源不同。
 > 已验证版本：`com.lptiyu.tanke` **v4.2.0 / versionCode 220**（v3.0.0 发布时在真机复验过）
 > 本文回答一个问题：**把这个模块换到另一个乐跑版本上，会坏在哪、怎么最快确认。**
 

@@ -1,6 +1,6 @@
 # 安装 · 验证 · 卸载 · 排错
 
-本次清洗候选仅附 lite 包；full 包相关内容为原项目说明，full 实物及其第三方许可尚未提供或审核。
+本次 Release 提供 full 与 lite 安装包。full 内置 arm64 Node.js 及十个依赖库，已随包补齐第三方许可并完成文件复核；本次未进行新的真机测试。
 
 适用：`com.lptiyu.tanke`（乐跑）**v4.2.0 / versionCode 220**
 模块 id / 目录：`tanke_proxy` / `/data/adb/modules/tanke_proxy`
@@ -12,12 +12,12 @@
 
 | 包 | 大小 | 里面有什么 | 手机需要什么 |
 | --- | --- | --- | --- |
-| `tanke-proxy-full.zip` | 约 36 MB | 全部文件 + **内置 node 运行时**（`bin/node` + `lib/`） | 只要 root + Magisk |
+| `tanke-proxy-full.zip` | 约 34 MiB | 全部文件 + **内置 node 运行时**（`bin/node` + `lib/`） | 只要 root + Magisk |
 | `tanke-proxy-lite.zip` | 约 74 KiB | 全部文件，不含 node | root + Magisk + **Termux 里装 node** |
 
-两个包功能完全一样，`lite` 只是把 node 运行时交给 Termux 提供。本次未附 full 包；使用当前候选须先安装 Termux 和 Node.js。
+两个包功能完全一样，`lite` 只是把 node 运行时交给 Termux 提供。full 无需另装 Termux；lite 须先安装 Termux 和 Node.js。
 
-full 包须在其实际内容及第三方许可单独通过检查后，再另行发布。
+full 的完整第三方许可与二进制来源说明位于 ZIP 内的 `third_party/runtime/`。
 
 ---
 
@@ -41,16 +41,17 @@ full 包须在其实际内容及第三方许可单独通过检查后，再另行
 
 ### 第 1 步：把包放到手机上
 
-当前候选用 lite：先在 Termux 中运行 `pkg install nodejs`，确认 Node.js 可用。
+使用 full 可直接安装；使用 lite 时，先在 Termux 中运行 `pkg install nodejs`。
+安装过程中，`customize.sh` 或 `deploy.sh` 会恢复 Node.js 与脚本的执行权限。
 
 **A（Magisk App 装，最简单）**
-Magisk App → 底部「模块」→ 右上角「从本地安装」→ 选 `tanke-proxy-lite.zip` → 装完点「重启」。
+Magisk App → 底部「模块」→ 右上角「从本地安装」→ 选 `tanke-proxy-full.zip`（或已准备好 Termux/Node.js 的 lite 包）→ 装完点「重启」。
 重启后模块自动生成证书并启动，跳到第 2 步验证。
 
 **B（手工解压 + `deploy.sh`，出问题时修也用这条）**
 
 ```sh
-adb push tanke-proxy-lite.zip /sdcard/
+adb push tanke-proxy-full.zip /sdcard/
 adb shell
 su
 mkdir -p /sdcard/tp && cd /sdcard/tp
@@ -202,7 +203,7 @@ adb pull /sdcard/tp-proxy.log
 
 | 文件 | 用途 |
 | --- | --- |
-| `tanke-proxy-full.zip` | 自包含包（内置 node 运行时），后续另行提供，本次未附 |
+| `tanke-proxy-full.zip` | 自包含包（内置 node 运行时），随本次 Release 提供，含完整第三方许可 |
 | `tanke-proxy-lite.zip` | 轻包（用 Termux 的 node），约 74 KiB，在本仓库 `dist/` 下 |
 | `docs/INSTALL.md` | 本文件：装 / 验 / 卸 / 排错 |
 | `docs/VERSION_COMPAT.md` | 版本敏感点清单：换 App 版本会坏在哪、怎么最快确认 |
@@ -213,7 +214,7 @@ adb pull /sdcard/tp-proxy.log
 
 ### 证书是怎么来的
 
-- 本次已检查的 lite 候选包里**没有证书或私钥**（`ca.key.pem`、`ca.crt.pem`、`leafs/` 都不在 zip 里）。
+- 本次已检查的 full 与 lite 安装包里**没有证书或私钥**（`ca.key.pem`、`ca.crt.pem`、`leafs/` 都不在 zip 里）。
 - 第一次部署时在手机上生成：根 CA（`ca.crt.pem` + `ca.key.pem`）+ 每个域名一张叶证书
   （`leafs/api2.lptiyu.com.*`、`leafs/api.lptiyu.com.*`、`leafs/pre-api.lptiyu.com.*`）。
   生成器是包内 `gencert.mjs`，只用 `node:crypto`，手工做 ASN.1/DER 编码。
@@ -224,8 +225,8 @@ adb pull /sdcard/tp-proxy.log
 
 ### 两个包的体积构成
 
-- `full`：`bin/node` 51,010,000 B + `lib/` 10 个 `.so` 共 48,170,240 B + 脚本与文档 ≈ 29 KB，
-  未压缩合计约 99.2 MB，zip 压缩后约 36 MB。
+- `full`：`bin/node` 51,010,000 B + `lib/` 10 个 `.so` 共 48,170,240 B + 脚本、文档与完整许可，
+  未压缩合计约 100 MB，ZIP 约 34 MiB，精确值见发布校验文件。
 - `lite`：只有脚本与文档，约 74 KiB。
 - `lib/` 是 `bin/node` 的动态依赖全集（`readelf -d` 的 `DT_NEEDED` 闭包）：
   `libz.so.1`、`libcares.so`、`libsqlite3.so`、`libffi.so`、`libcrypto.so.3`、`libssl.so.3`、
@@ -234,11 +235,12 @@ adb pull /sdcard/tp-proxy.log
 
 ### 内置运行时做过的一处修改
 
-Termux 的 `node` 和上面这些 `.so` 都带 `DT_RUNPATH=/data/data/com.termux/files/usr/lib`。
-打进包里之前，这个 RUNPATH 被就地改写成 `/data/adb/modules/tanke_proxy/lib`
-（写入位置是 ELF `.dynstr` 里该条目指向的那一个字符串，长度不变、文件大小不变）。
-改完后 `readelf -d bin/node` 显示新的 runpath，运行时 `/proc/<pid>/maps` 里
-`com.termux` 相关映射为 **0** 条。
+Termux 的 `node` 与其中九个动态库带有
+`DT_RUNPATH=/data/data/com.termux/files/usr/lib`；`libc++_shared.so` 没有 RUNPATH，保持原文件不变。
+打包前，十个文件中的 RUNPATH 被就地改写成 `/data/adb/modules/tanke_proxy/lib`
+（只改 ELF `.dynstr` 对应的字符串，保留原文件长度）。
+本次静态核对确认 `readelf -d bin/node` 显示新的 RUNPATH。下方既有真机记录中的
+`com.termux` 映射为 **0** 条属于历史结果，本次未重新测量。
 
 `node` 的 `.rodata` 里也有一份同样的路径字符串（编进构建配置的链接参数），那份**不能动** ——
 改动它会让 node 启动时解析内嵌 JSON 失败并直接退出。工具 `tools/patch-runpath2.mjs` 只改 `.dynstr`，

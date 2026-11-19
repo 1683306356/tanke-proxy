@@ -56,7 +56,7 @@
 
 先在 Termux 运行 `pkg install nodejs`。
 
-**方式 A**：Magisk App 里刷本次提供的 `tanke-proxy-lite.zip` → 重启。
+**方式 A**：Magisk App 里刷 `tanke-proxy-full.zip` 或 `tanke-proxy-lite.zip` → 重启。lite 需提前在 Termux 中安装 Node.js。
 **方式 B（不重启）**：解压后跑 `su -c 'cd <解压目录> && sh deploy.sh'`。
 
 装完先自检，确认模块自己是健康的：
@@ -202,7 +202,7 @@ su -c 'sh /data/adb/tanke-proxy/tanke-proxy.sh adapt-probe'   # sign 规则还�
 `capture.jsonl` 里是真实的请求体：`token`（登录态）、`uid` / `student_num` / `school_id`、
 `mobileDeviceId` / `mobileModel`、`sign`，以及解密后的整份 JSON。
 
-经本次检查的 lite 候选 ZIP 只包含模块代码、文档和许可，不含证书或日志。以后每次构建仍须单独检查 ZIP 内容；不能据此推断其他 ZIP 安全。
+经本次检查的 full / lite ZIP 均不含设备证书、私钥或运行日志。full 另含已核对来源的运行时及上游许可。以后每次构建仍须单独检查 ZIP 内容；不能据此推断其他 ZIP 安全。
 
 原始请求可能同时出现在 `REQ.bodyText`、`REQ.signTail`、`decrypted`、`REWRITE.from/to`、响应正文和路径查询参数中，加密体也可能携带相同数据。截断日志、只替换明文字段都不足以保证脱敏。不要公开原始抓包、私钥或完整备份；确需分享诊断信息时，逐条审查所有字段和嵌套内容。`adapt-probe-report.txt` 通常是汇总结果，也需检查输入路径、端点和备注。
 

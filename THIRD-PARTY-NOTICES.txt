@@ -2,17 +2,16 @@
 
 Copyright (c) 2026 W
 
-本仓库作者拥有权利的代码、脚本、配置和文档，采用同目录 LICENSE 所载
-《免费使用与受限商业分发许可证 v1.0》。该自定义许可证不能覆盖第三方
-组件原有的许可或版权声明。
+作者拥有权利的代码、脚本、配置和文档采用同目录 LICENSE 所载
+《免费使用与受限商业分发许可证 v1.0》。第三方组件保留其上游许可及版权；
+根 LICENSE 不能取代或限制这些上游许可。
 
-本源码候选及 lite 安装包不内置 Node.js、Termux 或第三方动态库。
-lite 包依赖使用者另行安装的 Node.js/Termux，其许可由各上游项目分别提供。
-脚本引用 node:crypto、node:fs 等内置模块，不代表本包分发 Node.js 运行时。
+lite 安装包不内置 Node.js、Termux 或第三方动态库，需使用者另行准备
+Node.js/Termux；相关许可由各上游项目提供。
 
-full 包若内置 Node.js 及其依赖库，发布者须根据实际二进制的版本和来源，
-保留各项版权、完整许可、通知及适用的源码/修改提供材料。根 LICENSE 仅适用于
-作者有权按该许可证发布的内容，不能取代这些上游许可。
+full 安装包包含 arm64 Node.js 及十个运行库。实际包版本、来源、RUNPATH
+修改说明和文件校验值见 third_party/runtime/THIRD-PARTY-NOTICES.txt；
+完整许可及版权声明见 third_party/runtime/licenses/。
+官方仓库的 docs/FULL-RUNTIME.md 说明本次运行时复核范围。
 
-full 包的实际版本、来源、修改说明及许可文本应随包放在 third_party/runtime/。
-本次候选不含 full 包或其运行时，不对未提供的 full 包作检查结论。
+安装后在手机上生成的证书、私钥及运行日志不属于发布内容。
